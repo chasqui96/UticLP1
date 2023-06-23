@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbLP1TPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Carrera">
+          <Key>
+            <PropertyRef Name="Carrera_Id" />
+          </Key>
+          <Property Name="Carrera_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Carrera_Codigo" Type="varchar" MaxLength="50" />
+          <Property Name="Carrera_Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="Ciudad_Id" />
+          </Key>
+          <Property Name="Ciudad_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ciudad_Codigo" Type="varchar" MaxLength="50" />
+          <Property Name="Ciudad_Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="Curso_Id" />
+          </Key>
+          <Property Name="Curso_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Curso_Codigo" Type="varchar" MaxLength="50" />
+          <Property Name="Curso_Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="Estudiante_Id" />
+          </Key>
+          <Property Name="Estudiante_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroEstudiante" Type="int" />
+          <Property Name="Persona_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="EstudianteGrado">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Anho" Type="varchar" MaxLength="100" />
+          <Property Name="Estudiante_Id" Type="int" />
+          <Property Name="Carrera_Id" Type="int" />
+          <Property Name="Curso_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Pais">
+          <Key>
+            <PropertyRef Name="Pais_Id" />
+          </Key>
+          <Property Name="Pais_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pais_Codigo" Type="varchar" MaxLength="50" />
+          <Property Name="Pais_Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Persona_Id" />
+          </Key>
+          <Property Name="Persona_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Edad" Type="int" />
+          <Property Name="Direccion" Type="varchar" MaxLength="255" />
+          <Property Name="Correo" Type="varchar" MaxLength="255" />
+          <Property Name="Ciudad_Id" Type="int" />
+          <Property Name="Pais_Id" Type="int" />
+        </EntityType>
+        <Association Name="FK__Estudiant__Carre__403A8C7D">
+          <End Role="Carrera" Type="Self.Carrera" Multiplicity="0..1" />
+          <End Role="EstudianteGrado" Type="Self.EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carrera">
+              <PropertyRef Name="Carrera_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Carrera_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Curso__3F466844">
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="0..1" />
+          <End Role="EstudianteGrado" Type="Self.EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Estudiante_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Estudiante_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Curso__412EB0B6">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="0..1" />
+          <End Role="EstudianteGrado" Type="Self.EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="Curso_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Curso_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Perso__3C69FB99">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Persona_Id" />
+            </Principal>
+            <Dependent Role="Estudiante">
+              <PropertyRef Name="Persona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__Ciudad___38996AB5">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="Ciudad_Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ciudad_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__Pais_Id__398D8EEE">
+          <End Role="Pais" Type="Self.Pais" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="Pais_Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Pais_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbLP1TPModelStoreContainer">
+          <EntitySet Name="Carrera" EntityType="Self.Carrera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstudianteGrado" EntityType="Self.EstudianteGrado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Estudiant__Carre__403A8C7D" Association="Self.FK__Estudiant__Carre__403A8C7D">
+            <End Role="Carrera" EntitySet="Carrera" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Curso__3F466844" Association="Self.FK__Estudiant__Curso__3F466844">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Curso__412EB0B6" Association="Self.FK__Estudiant__Curso__412EB0B6">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Perso__3C69FB99" Association="Self.FK__Estudiant__Perso__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Estudiante" EntitySet="Estudiante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__Ciudad___38996AB5" Association="Self.FK__Persona__Ciudad___38996AB5">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__Pais_Id__398D8EEE" Association="Self.FK__Persona__Pais_Id__398D8EEE">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbLP1TPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Carrera">
+          <Key>
+            <PropertyRef Name="Carrera_Id" />
+          </Key>
+          <Property Name="Carrera_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Carrera_Codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Carrera_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EstudianteGrado" Relationship="dbLP1TPModel.FK__Estudiant__Carre__403A8C7D" FromRole="Carrera" ToRole="EstudianteGrado" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="Ciudad_Id" />
+          </Key>
+          <Property Name="Ciudad_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ciudad_Codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ciudad_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Persona__Ciudad___2C3393D0" FromRole="Ciudad" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="Curso_Id" />
+          </Key>
+          <Property Name="Curso_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Curso_Codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Curso_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EstudianteGrado" Relationship="dbLP1TPModel.FK__Estudiant__Curso__412EB0B6" FromRole="Curso" ToRole="EstudianteGrado" />
+        </EntityType>
+        <EntityType Name="Pais">
+          <Key>
+            <PropertyRef Name="Pais_Id" />
+          </Key>
+          <Property Name="Pais_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pais_Codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pais_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Persona__Pais_Id__2D27B809" FromRole="Pais" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Persona_Id" />
+          </Key>
+          <Property Name="Persona_Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Edad" Type="Int32" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Ciudad_Id" Type="Int32" />
+          <Property Name="Pais_Id" Type="Int32" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK__Persona__Ciudad___2C3393D0" FromRole="Persona" ToRole="Ciudad" />
+          <NavigationProperty Name="Pais" Relationship="Self.FK__Persona__Pais_Id__2D27B809" FromRole="Persona" ToRole="Pais" />
+          <NavigationProperty Name="Estudiante" Relationship="dbLP1TPModel.FK__Estudiant__Perso__3C69FB99" FromRole="Persona" ToRole="Estudiante" />
+        </EntityType>
+        <Association Name="FK__Persona__Ciudad___2C3393D0">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="Ciudad_Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ciudad_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__Pais_Id__2D27B809">
+          <End Role="Pais" Type="Self.Pais" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="Pais_Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Pais_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbLP1TPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Carrera" EntityType="Self.Carrera" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <AssociationSet Name="FK__Persona__Ciudad___2C3393D0" Association="Self.FK__Persona__Ciudad___2C3393D0">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__Pais_Id__2D27B809" Association="Self.FK__Persona__Pais_Id__2D27B809">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <EntitySet Name="Estudiante" EntityType="dbLP1TPModel.Estudiante" />
+          <EntitySet Name="EstudianteGrado" EntityType="dbLP1TPModel.EstudianteGrado" />
+          <AssociationSet Name="FK__Estudiant__Carre__403A8C7D" Association="dbLP1TPModel.FK__Estudiant__Carre__403A8C7D">
+            <End Role="Carrera" EntitySet="Carrera" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Curso__412EB0B6" Association="dbLP1TPModel.FK__Estudiant__Curso__412EB0B6">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Curso__3F466844" Association="dbLP1TPModel.FK__Estudiant__Curso__3F466844">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="EstudianteGrado" EntitySet="EstudianteGrado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Estudiant__Perso__3C69FB99" Association="dbLP1TPModel.FK__Estudiant__Perso__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Estudiante" EntitySet="Estudiante" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="Estudiante_Id" />
+          </Key>
+          <Property Name="Estudiante_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroEstudiante" Type="Int32" />
+          <Property Name="Persona_Id" Type="Int32" />
+          <NavigationProperty Name="EstudianteGrado" Relationship="dbLP1TPModel.FK__Estudiant__Curso__3F466844" FromRole="Estudiante" ToRole="EstudianteGrado" />
+          <NavigationProperty Name="Persona" Relationship="dbLP1TPModel.FK__Estudiant__Perso__3C69FB99" FromRole="Estudiante" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="EstudianteGrado">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Anho" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Estudiante_Id" Type="Int32" />
+          <Property Name="Carrera_Id" Type="Int32" />
+          <Property Name="Curso_Id" Type="Int32" />
+          <NavigationProperty Name="Carrera" Relationship="dbLP1TPModel.FK__Estudiant__Carre__403A8C7D" FromRole="EstudianteGrado" ToRole="Carrera" />
+          <NavigationProperty Name="Curso" Relationship="dbLP1TPModel.FK__Estudiant__Curso__412EB0B6" FromRole="EstudianteGrado" ToRole="Curso" />
+          <NavigationProperty Name="Estudiante" Relationship="dbLP1TPModel.FK__Estudiant__Curso__3F466844" FromRole="EstudianteGrado" ToRole="Estudiante" />
+        </EntityType>
+        <Association Name="FK__Estudiant__Carre__403A8C7D">
+          <End Type="dbLP1TPModel.Carrera" Role="Carrera" Multiplicity="0..1" />
+          <End Type="dbLP1TPModel.EstudianteGrado" Role="EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carrera">
+              <PropertyRef Name="Carrera_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Carrera_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Curso__412EB0B6">
+          <End Type="dbLP1TPModel.Curso" Role="Curso" Multiplicity="0..1" />
+          <End Type="dbLP1TPModel.EstudianteGrado" Role="EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="Curso_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Curso_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Curso__3F466844">
+          <End Type="dbLP1TPModel.Estudiante" Role="Estudiante" Multiplicity="0..1" />
+          <End Type="dbLP1TPModel.EstudianteGrado" Role="EstudianteGrado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Estudiante_Id" />
+            </Principal>
+            <Dependent Role="EstudianteGrado">
+              <PropertyRef Name="Estudiante_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Estudiant__Perso__3C69FB99">
+          <End Type="dbLP1TPModel.Persona" Role="Persona" Multiplicity="0..1" />
+          <End Type="dbLP1TPModel.Estudiante" Role="Estudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Persona_Id" />
+            </Principal>
+            <Dependent Role="Estudiante">
+              <PropertyRef Name="Persona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbLP1TPModelStoreContainer" CdmEntityContainer="dbLP1TPEntities">
+          <EntitySetMapping Name="Carrera">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Carrera">
+              <MappingFragment StoreEntitySet="Carrera">
+                <ScalarProperty Name="Carrera_Id" ColumnName="Carrera_Id" />
+                <ScalarProperty Name="Carrera_Codigo" ColumnName="Carrera_Codigo" />
+                <ScalarProperty Name="Carrera_Nombre" ColumnName="Carrera_Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudad">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
+                <ScalarProperty Name="Ciudad_Id" ColumnName="Ciudad_Id" />
+                <ScalarProperty Name="Ciudad_Codigo" ColumnName="Ciudad_Codigo" />
+                <ScalarProperty Name="Ciudad_Nombre" ColumnName="Ciudad_Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Curso">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Curso">
+              <MappingFragment StoreEntitySet="Curso">
+                <ScalarProperty Name="Curso_Id" ColumnName="Curso_Id" />
+                <ScalarProperty Name="Curso_Codigo" ColumnName="Curso_Codigo" />
+                <ScalarProperty Name="Curso_Nombre" ColumnName="Curso_Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pais">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Pais">
+              <MappingFragment StoreEntitySet="Pais">
+                <ScalarProperty Name="Pais_Id" ColumnName="Pais_Id" />
+                <ScalarProperty Name="Pais_Codigo" ColumnName="Pais_Codigo" />
+                <ScalarProperty Name="Pais_Nombre" ColumnName="Pais_Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="Persona_Id" ColumnName="Persona_Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Ciudad_Id" ColumnName="Ciudad_Id" />
+                <ScalarProperty Name="Pais_Id" ColumnName="Pais_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estudiante">
+            <EntityTypeMapping TypeName="dbLP1TPModel.Estudiante">
+              <MappingFragment StoreEntitySet="Estudiante">
+                <ScalarProperty Name="Persona_Id" ColumnName="Persona_Id" />
+                <ScalarProperty Name="NumeroEstudiante" ColumnName="NumeroEstudiante" />
+                <ScalarProperty Name="Estudiante_Id" ColumnName="Estudiante_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstudianteGrado">
+            <EntityTypeMapping TypeName="dbLP1TPModel.EstudianteGrado">
+              <MappingFragment StoreEntitySet="EstudianteGrado">
+                <ScalarProperty Name="Curso_Id" ColumnName="Curso_Id" />
+                <ScalarProperty Name="Carrera_Id" ColumnName="Carrera_Id" />
+                <ScalarProperty Name="Estudiante_Id" ColumnName="Estudiante_Id" />
+                <ScalarProperty Name="Anho" ColumnName="Anho" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

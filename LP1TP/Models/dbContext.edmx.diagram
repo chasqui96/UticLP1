@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="70b6e14681df4ce88e47351f192b0109" Name="Diagram1">
+        <EntityTypeShape EntityType="dbLP1TPModel.Carrera" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbLP1TPModel.Ciudad" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbLP1TPModel.Curso" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbLP1TPModel.Pais" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbLP1TPModel.Persona" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Persona__Ciudad___2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Persona__Pais_Id__2D27B809" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbLP1TPModel.Estudiante" Width="1.5" PointX="5.25" PointY="1.5" />
+        <EntityTypeShape EntityType="dbLP1TPModel.EstudianteGrado" Width="1.5" PointX="7.5" PointY="4.125" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Estudiant__Carre__403A8C7D" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Estudiant__Curso__412EB0B6" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Estudiant__Curso__3F466844" />
+        <AssociationConnector Association="dbLP1TPModel.FK__Estudiant__Perso__3C69FB99" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

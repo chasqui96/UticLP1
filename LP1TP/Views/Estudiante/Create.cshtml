@@ -1,0 +1,132 @@
+﻿@model LP1TP.Models.Estudiante
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <h4>Estudiante</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Persona.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.EditorFor(model => model.Persona.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Persona.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Persona.Edad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.EditorFor(model => model.Persona.Edad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Persona.Edad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Persona.Direccion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.EditorFor(model => model.Persona.Direccion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Persona.Direccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Persona.Correo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.EditorFor(model => model.Persona.Correo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Persona.Correo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Label("Ciudad", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.DropDownList("Ciudad_Id", null, "Seleccione Ciudad", htmlAttributes: new { @class = "form-control",@name="Persona.Ciudad_Id" })
+                @Html.ValidationMessageFor(model => model.Persona.Ciudad_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            @Html.Label("Pais", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.DropDownList("Pais_Id", null, "Seleccione Pais", htmlAttributes: new { @class = "form-control", @name = "Persona.Pais_Id" })
+                @Html.ValidationMessageFor(model => model.Persona.Pais_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4><strong> Detalle Alumno</strong></h4>
+                @if (Model != null && Model.EstudianteGrado != null && Model.EstudianteGrado.Count > 0)
+                {
+
+
+                    <button type="submit" name="operacion" data-val="false" value="agregar-curso" class="btn btn-primary" disabled>Agregar Detalle</button>
+                }
+                else
+                {
+                    <button type="submit" name="operacion" data-val="false" value="agregar-curso" class="btn btn-primary">Agregar Detalle</button>
+                }
+
+                <hr />
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+
+                            <th>Carrera</th>
+                            <th>Curso</th>
+                            <th>Anho</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.EstudianteGrado != null && Model.EstudianteGrado.Count > 0)
+                        {
+                            var index = 0;
+                            foreach (var item in Model.EstudianteGrado)
+                            {
+                                <tr>
+                                    <td style="width:30%">@Html.DropDownList("EstudianteGrado[" + index + "].Carrera_Id", new SelectList(ViewBag.Carreras, "Carrera_Id", "Carrera_Codigo", item.Carrera_Id), new { @class = "form-control" })</td>
+                                    <td style="width:30%">@Html.DropDownList("EstudianteGrado[" + index + "].Curso_Id", new SelectList(ViewBag.Cursos, "Curso_Id", "Curso_Codigo", item.Curso_Id), new { @class = "form-control" })</td>
+                                    <td>@Html.TextBox("EstudianteGrado[" + index + "].Anho", item.Anho, new { @class = "form-control" })</td>
+                                    <td><button type="submit" name="operacion" value="eliminar-detalle-@index" class="btn btn-danger">Eliminar</button></td>
+                                </tr>
+                                index++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <input type="submit" value="Crear Alumno" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+
