@@ -1,0 +1,105 @@
+﻿@model ExamenFinalEnunciadoD.Models.Empleado
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Empleado</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_Numero, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_Numero, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_Numero, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_Nombre_Completo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_Nombre_Completo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_Nombre_Completo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_CI, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_CI, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_CI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-md-6">
+                    <button type="submit" name="operacion" data-val="false" value="agregar-honorario" class="btn btn-primary">Agregar Honorario</button>
+
+                    <hr />
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+
+                                <th>Tipo Asalariado</th>
+                                <th>Importe Salario</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Empleado_Honorario != null && Model.Empleado_Honorario.Count > 0)
+                            {
+                                var index = 0;
+                                foreach (var item in Model.Empleado_Honorario)
+                                {
+                                    <tr>
+
+                                        <td style="width:50%">@Html.DropDownList("Empleado_Honorario[" + index + "].Tipo_Asalariado_Id", new SelectList(ViewBag.Tipo_Asalariado, "Tipo_Asalariado_Id", "Tipo_Asalariado_Codigo", 0), new { @class = "form-control", @id = "Tipo_Asalariado_Id" })</td>
+                                        <td style="width:50%"><select id="Configuracion_Salarial_Id" name="Empleado_Honorario[" + index + "].Configuracion_Salarial_Id" class="form-control"></select></td>
+                                        <td><button type="submit" name="operacion" value="eliminar-detalle-@index" class="btn btn-danger">Eliminar</button></td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>*@
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $('#Tipo_Asalariado_Id').change(function(){
+        $('#Configuracion_Salarial_Id').html('');
+        console.log($(this).val());
+        $.getJSON('@Url.Action("SearchOptions", "Empleado")' + '/'+$('#Tipo_Asalariado_Id').val() ,function(data){
+        var centros = data;
+
+		for (var i = 0; i < centros.length; i++) {
+            $('#Configuracion_Salarial_Id').append('<option value="'+centros[i].id+'">'+centros[i].text+'</option>');
+		}
+	});
+});
+
+    </script>
+}

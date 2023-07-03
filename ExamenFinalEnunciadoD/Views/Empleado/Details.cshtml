@@ -1,0 +1,77 @@
+﻿
+@model ExamenFinalEnunciadoD.Models.Empleado
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Empleado</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+
+            <select id="Empleado_Numero" class="form-control"></select>
+        </div>
+        <div class="col-2">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Buscar Datos" class="btn btn-primary" id="btnBuscar" />
+            </div>
+        </div>
+        
+     <ul >
+        <li id="Sueldo_Normal"></li>
+        <li id="Sueldo_Extra"></li>
+        <li id="Sueldo_Neto"></li>
+     </ul>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(document).ready(function () {
+
+        $('#Empleado_Numero').select2({
+            placeholder: 'Buscar Contrato Numero',
+            multiple: true,
+            ajax: {
+                url: '@Url.Action("SearchOptions", "Empleado")',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    var searchTerm = params.term ? params.term : null;
+                    return {
+                        searchTerm: searchTerm
+                    };
+
+                },
+                processResults: function (data) {
+
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+
+         });
+
+    });
+         $("#btnBuscar").click(function () {
+             $.getJSON('@Url.Action("SearchOptionsDatos", "Empleado")' + '/' + $('#Empleado_Numero').val() ,function(data){
+                 var centros = data;
+                 
+                 $("").append(centros.Salario_Hora_Normal);
+                 $("").append(centros.Salario_Extra);
+                 $("").append(centros.Sueldo_Neto);
+           })
+        });
+
+    </script>
+
+}

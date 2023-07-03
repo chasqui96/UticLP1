@@ -1,0 +1,134 @@
+﻿@model ExamenFinalEnunciadoD.Models.Empleado
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Empleado</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Empleado_Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_Numero, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_Numero, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_Numero, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_Nombre_Completo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_Nombre_Completo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_Nombre_Completo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Empleado_CI, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Empleado_CI, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Empleado_CI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <h4><strong> Detalle Empleado</strong></h4>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button type="submit" name="operacion" data-val="false" value="agregar-horario" class="btn btn-primary">Agregar Horario</button>
+
+                    <hr />
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+
+                                <th>Hrs. Diario</th>
+                                <th>Hrs. Extras 50%</th>
+                                <th>Hrs. Extras 100%</th>
+                                <th>Dia Trabajado</th>
+                                <th>Ausencia S/N</th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Empleado_Horario != null && Model.Empleado_Horario.Count > 0)
+                            {
+                                var index = 0;
+                                foreach (var item in Model.Empleado_Horario)
+                                {
+                                    <tr>
+                                        <td style="width:20%">@Html.TextBox("Empleado_Horario[" + index + "].Empleado_Horario_Trabajado_Diario", item.Empleado_Horario_Trabajado_Diario, new { @class = "form-control" })</td>
+                                        <td style="width:20%">@Html.TextBox("Empleado_Horario[" + index + "].Empleado_Horario_Hora_Extra_50", item.Empleado_Horario_Hora_Extra_50, new { @class = "form-control" })</td>
+                                        <td style="width:20%">@Html.TextBox("Empleado_Horario[" + index + "].Empleado_Horario_Hora_Extra_100", item.Empleado_Horario_Hora_Extra_100, new { @class = "form-control" })</td>
+                                        <td style="width:20%">@Html.DropDownList("Empleado_Horario[" + index + "].Dia_Trabajado_Id", new SelectList(ViewBag.Dia_Trabajado, "Dia_Tabrajado_Id", "Dia_Trabajado_Nombre", item.Dia_Trabajado_Id), new { @class = "form-control", @id = "Tipo_Asalariado_Id" })</td>
+                                        <td style="width:20%">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="Ausencia_S_N_Id" name="Empleado_Horario[" + index + "].Ausente_S_N">
+                                                <label class="form-check-label" id="Ausencia_S_N_Label_Id" for="flexSwitchCheckDefault">NO</label>
+                                            </div>
+                                        </td>
+                                        <td><button type="submit" name="operacion" value="eliminar-horario-@index" class="btn btn-danger">Eliminar</button></td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $('#Tipo_Asalariado_Id').change(function(){
+        $('#Configuracion_Salarial_Id').html('');
+        console.log($(this).val());
+        $.getJSON('@Url.Action("SearchOptions", "Empleado")' + '/'+$('#Tipo_Asalariado_Id').val() ,function(data){
+        var centros = data;
+
+		for (var i = 0; i < centros.length; i++) {
+            $('#Configuracion_Salarial_Id').append('<option value="'+centros[i].id+'">'+centros[i].text+'</option>');
+		}
+	});
+
+});
+        const checkboxes = document.querySelectorAll('.form-check-input');
+        const labels = document.querySelectorAll('.form-check-label');
+
+        checkboxes.forEach(function (checkbox, index) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    labels[index].innerText = 'SI';
+                } else {
+                    labels[index].innerText = 'NO';
+                }
+            });
+        });
+
+
+    </script>
+}

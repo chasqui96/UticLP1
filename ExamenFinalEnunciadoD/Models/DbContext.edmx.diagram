@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="723b13e8e3b34932b0987d0d2246e5ac" Name="Diagram1">
+        <EntityTypeShape EntityType="dbContextModel.Configuracion_Salarial" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbContextModel.Dia_Trabajado" Width="1.5" PointX="3.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbContextModel.Empleado" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbContextModel.Empleado_Horario" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbContextModel.Tipo_Asalariado" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <AssociationConnector Association="dbContextModel.FK_Dia_Trabajado_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="dbContextModel.FK_Empleado_Horario_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="dbContextModel.FK_Configuracion_Salarial_Tipo_Asalariado" />
+        <EntityTypeShape EntityType="dbContextModel.Empleado_Honorario" Width="1.5" PointX="3" PointY="4.5" />
+        <AssociationConnector Association="dbContextModel.FK_Empleado_Honorario_Configuracion_Salarial" />
+        <AssociationConnector Association="dbContextModel.FK_Empleado_Empleado_Honorario" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

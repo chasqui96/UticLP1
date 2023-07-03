@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Configuracion_Salarial">
+          <Key>
+            <PropertyRef Name="Configuracion_Salarial_Id" />
+          </Key>
+          <Property Name="Configuracion_Salarial_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Configuracion_Salarial_Importe_Neto" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Importe_Descuento" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Jornal_Diario" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Jornal_Por_Hora" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Tipo_Asalariado_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Dia_Trabajado">
+          <Key>
+            <PropertyRef Name="Dia_Tabrajado_Id" />
+          </Key>
+          <Property Name="Dia_Tabrajado_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dia_Trabajado_Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Empleado_Id" />
+          </Key>
+          <Property Name="Empleado_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Empleado_Numero" Type="varchar" MaxLength="50" />
+          <Property Name="Empleado_Nombre_Completo" Type="varchar" MaxLength="50" />
+          <Property Name="Empleado_CI" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Empleado_Honorario">
+          <Key>
+            <PropertyRef Name="Empleado_Honorario_Id" />
+          </Key>
+          <Property Name="Empleado_Honorario_Id" Type="int" Nullable="false" />
+          <Property Name="Empleado_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Configuracion_Salarial_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Empleado_Horario">
+          <Key>
+            <PropertyRef Name="Empleado_Horario_Id" />
+          </Key>
+          <Property Name="Empleado_Horario_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Empleado_Id" Type="int" />
+          <Property Name="Dia_Trabajado_Id" Type="int" />
+          <Property Name="Empleado_Horario_Trabajado_Diario" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Empleado_Horario_Trabajado_Semanal" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Empleado_Horario_Hora_Extra_100" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Empleado_Horario_Hora_Extra_50" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Ausente_S_N" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tipo_Asalariado">
+          <Key>
+            <PropertyRef Name="Tipo_Asalariado_Id" />
+          </Key>
+          <Property Name="Tipo_Asalariado_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo_Asalariado_Codigo" Type="varchar" MaxLength="255" />
+          <Property Name="Tipo_Asalariado_Nombre" Type="varchar" MaxLength="255" />
+          <Property Name="Tipo_Asalariado_Descripcion" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_Configuracion_Salarial_Tipo_Asalariado">
+          <End Role="Tipo_Asalariado" Type="Self.Tipo_Asalariado" Multiplicity="0..1" />
+          <End Role="Configuracion_Salarial" Type="Self.Configuracion_Salarial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Asalariado">
+              <PropertyRef Name="Tipo_Asalariado_Id" />
+            </Principal>
+            <Dependent Role="Configuracion_Salarial">
+              <PropertyRef Name="Tipo_Asalariado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dia_Trabajado_Empleado">
+          <End Role="Dia_Trabajado" Type="Self.Dia_Trabajado" Multiplicity="0..1" />
+          <End Role="Empleado_Horario" Type="Self.Empleado_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dia_Trabajado">
+              <PropertyRef Name="Dia_Tabrajado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Horario">
+              <PropertyRef Name="Dia_Trabajado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleado_Empleado_Honorario">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="Empleado_Honorario" Type="Self.Empleado_Honorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Empleado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Honorario">
+              <PropertyRef Name="Empleado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleado_Honorario_Configuracion_Salarial">
+          <End Role="Configuracion_Salarial" Type="Self.Configuracion_Salarial" Multiplicity="0..1" />
+          <End Role="Empleado_Honorario" Type="Self.Empleado_Honorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Configuracion_Salarial">
+              <PropertyRef Name="Configuracion_Salarial_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Honorario">
+              <PropertyRef Name="Configuracion_Salarial_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleado_Horario_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Empleado_Horario" Type="Self.Empleado_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Empleado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Horario">
+              <PropertyRef Name="Empleado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbContextModelStoreContainer">
+          <EntitySet Name="Configuracion_Salarial" EntityType="Self.Configuracion_Salarial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dia_Trabajado" EntityType="Self.Dia_Trabajado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado_Honorario" EntityType="Self.Empleado_Honorario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado_Horario" EntityType="Self.Empleado_Horario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Asalariado" EntityType="Self.Tipo_Asalariado" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Configuracion_Salarial_Tipo_Asalariado" Association="Self.FK_Configuracion_Salarial_Tipo_Asalariado">
+            <End Role="Tipo_Asalariado" EntitySet="Tipo_Asalariado" />
+            <End Role="Configuracion_Salarial" EntitySet="Configuracion_Salarial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dia_Trabajado_Empleado" Association="Self.FK_Dia_Trabajado_Empleado">
+            <End Role="Dia_Trabajado" EntitySet="Dia_Trabajado" />
+            <End Role="Empleado_Horario" EntitySet="Empleado_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleado_Empleado_Honorario" Association="Self.FK_Empleado_Empleado_Honorario">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Empleado_Honorario" EntitySet="Empleado_Honorario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleado_Honorario_Configuracion_Salarial" Association="Self.FK_Empleado_Honorario_Configuracion_Salarial">
+            <End Role="Configuracion_Salarial" EntitySet="Configuracion_Salarial" />
+            <End Role="Empleado_Honorario" EntitySet="Empleado_Honorario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleado_Horario_Empleado" Association="Self.FK_Empleado_Horario_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Empleado_Horario" EntitySet="Empleado_Horario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbContextModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Configuracion_Salarial">
+          <Key>
+            <PropertyRef Name="Configuracion_Salarial_Id" />
+          </Key>
+          <Property Name="Configuracion_Salarial_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Configuracion_Salarial_Importe_Neto" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Importe_Descuento" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Jornal_Diario" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Configuracion_Salarial_Jornal_Por_Hora" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tipo_Asalariado_Id" Type="Int32" />
+          <NavigationProperty Name="Tipo_Asalariado" Relationship="dbContextModel.FK_Configuracion_Salarial_Tipo_Asalariado" FromRole="Configuracion_Salarial" ToRole="Tipo_Asalariado" />
+          <NavigationProperty Name="Empleado_Honorario" Relationship="dbContextModel.FK_Empleado_Honorario_Configuracion_Salarial" FromRole="Configuracion_Salarial" ToRole="Empleado_Honorario" />
+        </EntityType>
+        <EntityType Name="Dia_Trabajado">
+          <Key>
+            <PropertyRef Name="Dia_Tabrajado_Id" />
+          </Key>
+          <Property Name="Dia_Tabrajado_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dia_Trabajado_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Empleado_Horario" Relationship="Self.FK_Dia_Trabajado_Empleado" FromRole="Dia_Trabajado" ToRole="Empleado_Horario" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Empleado_Id" />
+          </Key>
+          <Property Name="Empleado_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Empleado_Numero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Empleado_Nombre_Completo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Empleado_CI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Empleado_Horario" Relationship="Self.FK_Empleado_Horario_Empleado" FromRole="Empleado" ToRole="Empleado_Horario" />
+          <NavigationProperty Name="Empleado_Honorario" Relationship="dbContextModel.FK_Empleado_Empleado_Honorario" FromRole="Empleado" ToRole="Empleado_Honorario" />
+        </EntityType>
+        <EntityType Name="Empleado_Horario">
+          <Key>
+            <PropertyRef Name="Empleado_Horario_Id" />
+          </Key>
+          <Property Name="Empleado_Horario_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Empleado_Id" Type="Int32" />
+          <Property Name="Dia_Trabajado_Id" Type="Int32" />
+          <Property Name="Empleado_Horario_Trabajado_Diario" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Empleado_Horario_Trabajado_Semanal" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Empleado_Horario_Hora_Extra_100" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Empleado_Horario_Hora_Extra_50" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Ausente_S_N" Type="Boolean" />
+          <NavigationProperty Name="Dia_Trabajado" Relationship="Self.FK_Dia_Trabajado_Empleado" FromRole="Empleado_Horario" ToRole="Dia_Trabajado" />
+          <NavigationProperty Name="Empleado" Relationship="Self.FK_Empleado_Horario_Empleado" FromRole="Empleado_Horario" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="Tipo_Asalariado">
+          <Key>
+            <PropertyRef Name="Tipo_Asalariado_Id" />
+          </Key>
+          <Property Name="Tipo_Asalariado_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo_Asalariado_Codigo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Asalariado_Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Asalariado_Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Configuracion_Salarial" Relationship="dbContextModel.FK_Configuracion_Salarial_Tipo_Asalariado" FromRole="Tipo_Asalariado" ToRole="Configuracion_Salarial" />
+        </EntityType>
+        <Association Name="FK_Dia_Trabajado_Empleado">
+          <End Role="Dia_Trabajado" Type="Self.Dia_Trabajado" Multiplicity="0..1" />
+          <End Role="Empleado_Horario" Type="Self.Empleado_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dia_Trabajado">
+              <PropertyRef Name="Dia_Tabrajado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Horario">
+              <PropertyRef Name="Dia_Trabajado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleado_Horario_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Empleado_Horario" Type="Self.Empleado_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Empleado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Horario">
+              <PropertyRef Name="Empleado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Configuracion_Salarial" EntityType="Self.Configuracion_Salarial" />
+          <EntitySet Name="Dia_Trabajado" EntityType="Self.Dia_Trabajado" />
+          <EntitySet Name="Empleadoes" EntityType="Self.Empleado" />
+          <EntitySet Name="Empleado_Horario" EntityType="Self.Empleado_Horario" />
+          <EntitySet Name="Tipo_Asalariado" EntityType="Self.Tipo_Asalariado" />
+          <AssociationSet Name="FK_Dia_Trabajado_Empleado" Association="Self.FK_Dia_Trabajado_Empleado">
+            <End Role="Dia_Trabajado" EntitySet="Dia_Trabajado" />
+            <End Role="Empleado_Horario" EntitySet="Empleado_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleado_Horario_Empleado" Association="Self.FK_Empleado_Horario_Empleado">
+            <End Role="Empleado" EntitySet="Empleadoes" />
+            <End Role="Empleado_Horario" EntitySet="Empleado_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Configuracion_Salarial_Tipo_Asalariado" Association="dbContextModel.FK_Configuracion_Salarial_Tipo_Asalariado">
+            <End Role="Tipo_Asalariado" EntitySet="Tipo_Asalariado" />
+            <End Role="Configuracion_Salarial" EntitySet="Configuracion_Salarial" />
+          </AssociationSet>
+          <EntitySet Name="Empleado_Honorario" EntityType="dbContextModel.Empleado_Honorario" />
+          <AssociationSet Name="FK_Empleado_Honorario_Configuracion_Salarial" Association="dbContextModel.FK_Empleado_Honorario_Configuracion_Salarial">
+            <End Role="Configuracion_Salarial" EntitySet="Configuracion_Salarial" />
+            <End Role="Empleado_Honorario" EntitySet="Empleado_Honorario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleado_Empleado_Honorario" Association="dbContextModel.FK_Empleado_Empleado_Honorario">
+            <End Role="Empleado" EntitySet="Empleadoes" />
+            <End Role="Empleado_Honorario" EntitySet="Empleado_Honorario" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Configuracion_Salarial_Tipo_Asalariado">
+          <End Type="dbContextModel.Tipo_Asalariado" Role="Tipo_Asalariado" Multiplicity="0..1" />
+          <End Type="dbContextModel.Configuracion_Salarial" Role="Configuracion_Salarial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Asalariado">
+              <PropertyRef Name="Tipo_Asalariado_Id" />
+            </Principal>
+            <Dependent Role="Configuracion_Salarial">
+              <PropertyRef Name="Tipo_Asalariado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Empleado_Honorario">
+          <Key>
+            <PropertyRef Name="Empleado_Honorario_Id" />
+          </Key>
+          <Property Name="Empleado_Honorario_Id" Type="Int32" Nullable="false" />
+          <Property Name="Empleado_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Configuracion_Salarial_Id" Type="Int32" />
+          <NavigationProperty Name="Configuracion_Salarial" Relationship="dbContextModel.FK_Empleado_Honorario_Configuracion_Salarial" FromRole="Empleado_Honorario" ToRole="Configuracion_Salarial" />
+          <NavigationProperty Name="Empleado" Relationship="dbContextModel.FK_Empleado_Empleado_Honorario" FromRole="Empleado_Honorario" ToRole="Empleado" />
+        </EntityType>
+        <Association Name="FK_Empleado_Honorario_Configuracion_Salarial">
+          <End Type="dbContextModel.Configuracion_Salarial" Role="Configuracion_Salarial" Multiplicity="0..1" />
+          <End Type="dbContextModel.Empleado_Honorario" Role="Empleado_Honorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Configuracion_Salarial">
+              <PropertyRef Name="Configuracion_Salarial_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Honorario">
+              <PropertyRef Name="Configuracion_Salarial_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleado_Empleado_Honorario">
+          <End Type="dbContextModel.Empleado" Role="Empleado" Multiplicity="1" />
+          <End Type="dbContextModel.Empleado_Honorario" Role="Empleado_Honorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Empleado_Id" />
+            </Principal>
+            <Dependent Role="Empleado_Honorario">
+              <PropertyRef Name="Empleado_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbContextModelStoreContainer" CdmEntityContainer="dbEntities">
+          <EntitySetMapping Name="Configuracion_Salarial">
+            <EntityTypeMapping TypeName="dbContextModel.Configuracion_Salarial">
+              <MappingFragment StoreEntitySet="Configuracion_Salarial">
+                <ScalarProperty Name="Tipo_Asalariado_Id" ColumnName="Tipo_Asalariado_Id" />
+                <ScalarProperty Name="Configuracion_Salarial_Id" ColumnName="Configuracion_Salarial_Id" />
+                <ScalarProperty Name="Configuracion_Salarial_Importe_Neto" ColumnName="Configuracion_Salarial_Importe_Neto" />
+                <ScalarProperty Name="Configuracion_Salarial_Importe_Descuento" ColumnName="Configuracion_Salarial_Importe_Descuento" />
+                <ScalarProperty Name="Configuracion_Salarial_Jornal_Diario" ColumnName="Configuracion_Salarial_Jornal_Diario" />
+                <ScalarProperty Name="Configuracion_Salarial_Jornal_Por_Hora" ColumnName="Configuracion_Salarial_Jornal_Por_Hora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dia_Trabajado">
+            <EntityTypeMapping TypeName="dbContextModel.Dia_Trabajado">
+              <MappingFragment StoreEntitySet="Dia_Trabajado">
+                <ScalarProperty Name="Dia_Tabrajado_Id" ColumnName="Dia_Tabrajado_Id" />
+                <ScalarProperty Name="Dia_Trabajado_Nombre" ColumnName="Dia_Trabajado_Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleadoes">
+            <EntityTypeMapping TypeName="dbContextModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="Empleado_Id" ColumnName="Empleado_Id" />
+                <ScalarProperty Name="Empleado_Numero" ColumnName="Empleado_Numero" />
+                <ScalarProperty Name="Empleado_Nombre_Completo" ColumnName="Empleado_Nombre_Completo" />
+                <ScalarProperty Name="Empleado_CI" ColumnName="Empleado_CI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleado_Horario">
+            <EntityTypeMapping TypeName="dbContextModel.Empleado_Horario">
+              <MappingFragment StoreEntitySet="Empleado_Horario">
+                <ScalarProperty Name="Empleado_Horario_Id" ColumnName="Empleado_Horario_Id" />
+                <ScalarProperty Name="Empleado_Id" ColumnName="Empleado_Id" />
+                <ScalarProperty Name="Dia_Trabajado_Id" ColumnName="Dia_Trabajado_Id" />
+                <ScalarProperty Name="Empleado_Horario_Trabajado_Diario" ColumnName="Empleado_Horario_Trabajado_Diario" />
+                <ScalarProperty Name="Empleado_Horario_Trabajado_Semanal" ColumnName="Empleado_Horario_Trabajado_Semanal" />
+                <ScalarProperty Name="Empleado_Horario_Hora_Extra_100" ColumnName="Empleado_Horario_Hora_Extra_100" />
+                <ScalarProperty Name="Empleado_Horario_Hora_Extra_50" ColumnName="Empleado_Horario_Hora_Extra_50" />
+                <ScalarProperty Name="Ausente_S_N" ColumnName="Ausente_S_N" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Asalariado">
+            <EntityTypeMapping TypeName="dbContextModel.Tipo_Asalariado">
+              <MappingFragment StoreEntitySet="Tipo_Asalariado">
+                <ScalarProperty Name="Tipo_Asalariado_Id" ColumnName="Tipo_Asalariado_Id" />
+                <ScalarProperty Name="Tipo_Asalariado_Codigo" ColumnName="Tipo_Asalariado_Codigo" />
+                <ScalarProperty Name="Tipo_Asalariado_Nombre" ColumnName="Tipo_Asalariado_Nombre" />
+                <ScalarProperty Name="Tipo_Asalariado_Descripcion" ColumnName="Tipo_Asalariado_Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleado_Honorario">
+            <EntityTypeMapping TypeName="dbContextModel.Empleado_Honorario">
+              <MappingFragment StoreEntitySet="Empleado_Honorario">
+                <ScalarProperty Name="Configuracion_Salarial_Id" ColumnName="Configuracion_Salarial_Id" />
+                <ScalarProperty Name="Empleado_Id" ColumnName="Empleado_Id" />
+                <ScalarProperty Name="Empleado_Honorario_Id" ColumnName="Empleado_Honorario_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
